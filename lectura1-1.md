@@ -1,0 +1,31 @@
+# Critique 1-1
+
+In the rising of information availability and distribution, the need for technologies that allow users to find relevant information is increasing rapidly. Not only is important for such technologies to yield high quality recommendations, but also it is fundamental for them to be scalable enough on ever-increasing systems (user-wise and/or item-wise). In the article, "Item-based Collaborative Filtering Recommendation Algorithms" Sarwar, B., Karypis, G., Konstan, J., & Riedl, J. (2001), item-based CF (Collaborative Filtering) is proposed and analyzed as an alternative to user-based CF.  Authors claim that: 'item-based algorithms provide better performance than user-based algorithms, while at the same time providing better quality than the best available user-based algorithms.'. While this article presented an item-based CF with lower MAE and better performance respect to user-based CF, the following aspect is worth noting:
+
+- Quality analysis was addressed only by comparison of MAE (accuracy) and aspects regarding quality such as serendipity and accuracy dependencies, were not included thoroughly in the study.
+
+The authors used movie data that included 100,000 ratings, used an 80/20 train dev(test) split and conducted a 10-fold cross validation on their experiments. The experiments consist of sensitivity analysis over effects of different similarity algorithms, training/dev split ratio, and hyperparameter tuning (k = neighborhood size). For this experiments, MAE was chosen as the evaluation metric. Their algorithm yielded lower MAE values compared to user-based CF and probably the most important discovery is that with a model size that corresponds to 1.9% to 3% of the items in the database (achieved with 25 < k < 50), the model accuracy remained within 96% and 98.3% of the item-item scheme accuracy (k = |Items| - 1).
+
+The article addresses quality of reccomendations only on the accuracy aspect. When describing the challenge of improving quality on the introduction, the authors lead the argument towards users level of trust over the recommender system, and how they will refuse to use systems that are not accurate enough. In Recommender Systems handbook [1] the following is stated:
+
+    While recent investigations show state-of-the-art model-based approaches superior to neighborhood ones in the task of predicting ratings, there is also an emerging understanding that good prediction accuracy alone does not guarantee users an effective and satisfying experience. Another factor that has been identified as playing an important role in the appreciation of users for the recommender system is serendipity. Serendipity extends the concept of novelty by helping a user find an interesting item he or she might not have otherwise discovered.
+
+Note: neighborhood approaches stated on the handbook refer to memory-based approaches similar to the user-based CF mentioned in the article. The item-based CF proposed by the authors is model-based.
+
+Another article [2] develops a similar argument:
+
+    While many of the published evaluations of CF systems measure accuracy, researchers and practitioners have come to learn that accuracy is not the only criteria of interest, and in some cases, may not even be the most important. Several other evaluation criteria have been explored.
+
+Note: Novelty/Serendipity is then developed as one of the other evaluation criteria that the article refers to. It even mentions that for many applications, novelty is one of the most valued characteristics of the CF system's recommendations (p. 313).
+
+The handbook suggests that understanding accuracy as an exclusive benchmark for quality may be misleading. Moreover, in page 49 of the handbook it is explicitly stated that: "item-based methods tend to recommend to a user items that are related to those usually appreciated by this user. (...) While this may lead to safe recommendations, it does less to help the user discover different types of items that he might like as much." Afterwards, the user-based approach is presented as more likely to make serendipitous recommendations thus giving higher quality recommendations in this perspective.
+
+Another argument against accuracy as the only quality-defining criteria is the dependence of it upon the ratio between the number of users and items in the system. This is due to the fact that average number of ratings and average number of neighbors available to make the predictions depend on this ratio, heavily impacting accuracy metrics (this idea is further developed on p. 47 of the handbook). In p. 48, two examples are shown to prove the point. In the case of large commercial systems like Amazon.com, where the number of users is much greater than the number of items, item-based methods can produce more accurate reccomendations. On systems that have less users than items, the user-based methods work better.
+
+The main weakness of this article is that presents the challenge of proposing an algorithm that provides high quality recommendations and addresses it unidimensionally in terms of accuracy. What if the algorithm they propose tend to recommend items that the user was capable of discovering on their own? Would they consider the recommender tool of high quality, or maybe it just gives to obvious recommendations? The article only confirms that through experimentation, item-based CF achieved better accuracy and better performance. The experiments were developed on one specific kind of database, a movie database in which the number of users was declared to be over 43000 users and 3500+ movies. This database has more users than items so as stated on the previous paragraph, item-based methods work better. This may suggest that given the dataset, the item-based approach was at an advantage in relation to theuser-based approach. This significantly reduces the relevance of their findings.
+
+## References
+
+[1] Ricci, F., Rokach, L., &amp; Shapira, B. (2015). Advantages of Neighborhood Approaches. In Recommender systems handbook. New York (N.Y.): Springer.
+
+[2] Schafer, J. B., Frankowski, D., Herlocker, J., & Sen, S. (2007). Collaborative filtering recommender systems. In The adaptive web (pp. 291-324). Springer Berlin Heidelberg.]

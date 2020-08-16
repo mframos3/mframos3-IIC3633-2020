@@ -1,0 +1,25 @@
+# Critique 1-2
+
+Simon Funk presented his own SVD approach used on his submissions for the netflix prize. The main motivation for Simon was to represent the data with fewer numbers as opossed to the traditional approach were one big and sparse matrix is used to represent the rating $r_{ui}$ made by the user $u$ (column) for the movie $j$ (row). Even though it is an informal blog post, there is not a sistematic approach on the development of the model he used. Various decisions he made on hyperparameters, functions and general model tuning seem 'hacky'. Specially I want to highlight his decision of applying early stopping as a means of reducing overfitting for later discussion.
+
+Simon basically separates the user-item matrix into two low-rank matrices that contain information about a definite number of 'aspects' that summed together describe a given item. One of the matrices stores the value of each 'aspect' for every movie, and the other the value of preference for each 'aspect' for every user. The dot product of this matrices output the 'preference score' of a each user for every movie. This score later, is passed through a function G that maps it to the rating space (the author found that a clipping function or sigmoid works well). This model requires 40*(17K + 500K) values which is 400 times less than the standard approach with the user-item matrix. This 'aspects' are parameters to be learned by the model. Simon defined a learning rate set to 0.001, weights initialization set to 0.1, Blending ratio of means set to 25 and a regularization parameter set to 0.02.
+
+The first thing it caught my attention in relationship to his 'hacky' approach on the development of his model was his definition of the learning rate. He explicitly states that he 'fortuitously' set the parameter to 0.001 and 'regretted it every time' he tried another value for it. There is no sensitivity analysis on how the parameter affects the optimization problem and no order on how he will address the development of the model with the goal of reducing the test error for the Netflix prize submission.
+
+Then on weight initialization he skips the analysis and sets everything to 0.1. Weight initialization is an important topic that is worth stopping on and analyze, specially to set up correctly the optimization problem. It seems that he arbitrarilty selected a non-zero initialization instead of proposing other alternatives that require further analysis. In Deep Learning, techniques such as Xavier initialization [1] are used to prevent vainishing or exploding gradients. It is true that in this case the backprop is shallow and chances for vanishing gradients or exploding gradients are low in comparison to a deep learning model [2], nonetheless he could have deepen the argument in order to find better values for initialization or to just point out that his values were enough.
+
+To improve the calculations of the average rating of a movie he explains that computing the normal average rating is not enough, specially on sparse vectors where a few ratings are known. He proposes 'accordinng to my shoddy math the actual best-guess mean' as a linear blend between the observed mean and the apriori mean. For that he defines a blending ratio that corresponds to the ratio of variances. He develops the idea and as soon he closes his argument he states: 'But in fact K=25 seems to work well so I used that instead. :)' without giving any clue on how he arrived to that value.
+
+Finally, the most important aspect for me is that Simon used early stopping to prevent overfitting having implemented a regularization technique. The problem with early stopping is the lacking of orthogonalization [3] [4] on his model tuning. Orthogonalization refers to tune the model in a way that it avoids side effects. Early stopping with the aim to prevent overfitting is at the same time affecting the optimization of the cost function. The right thing to do would have been to keep working on the regularization technique to avoid implementing strategies with side effects such as early stopping.
+
+## References
+
+[1] deeplearning.ai, Deep Learning Specialization Course 2: Improving Deep Neural Networks. Setting up your optimization problem: Weight Initialization for Deep Networks.https://www.coursera.org/learn/deep-neural-network/lecture/RwqYe/weight-initialization-for-deep-networks
+
+[2] deeplearning.ai, Deep Learning Specialization Course 2: Improving Deep Neural Networks. Setting up your optimization problem: Vanishing/Exploding gradients. https://www.coursera.org/learn/deep-neural-network/lecture/C9iQO/vanishing-exploding-gradients
+
+[3] deeplearning.ai, Deep Learning Specialization Course 2: Improving Deep Neural Networks. Regularizing your neural network: Other regularization methods. https://www.coursera.org/learn/deep-neural-network/lecture/C9iQO/vanishing-exploding-gradients
+
+[4] deeplearning.ai, Deep Learning Specialization Course 3: Structuring Machine Learning Projects. Introduction to ML Strategy: Orthogonalization. https://www.coursera.org/learn/deep-neural-network/lecture/C9iQO/vanishing-exploding-gradients
+
+
