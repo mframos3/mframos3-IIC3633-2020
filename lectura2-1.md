@@ -1,0 +1,28 @@
+# Critique 2-1
+
+Recommender systems rely on different type of input: explicit and implicit feedback. The first one provides more trustable information, thus of a higher quality regarding the task of recommending items to users, but is less available due to the fact that a small portion of users rate consistently the items they consume. On the other hand, implicit feedback is a broader type of input that is more available. Most users interaction with the items of a system can be stored and interpreted as some sort of feedback. Examples of implicit feedback are: number of clicks on an item, time watching an item, number of times the item has been consumed etc...
+
+In the article "Collaborative Filtering for Implicit Feedback Datasets" Hu, Y., Koren, Y., & Volinsky, C. (2008) a model for implicit feedback was proposed. Their model has a similar structure to latent factors models in which the two variables represent implicit feedback. The first one is a continous variable that represents the number of times of an item being watched (fractional values indicate that an item has not been consumed completely. e.g. 0.5 indicates half of a show being watched by the user). The second variable is a binarization of the previous one. The author's interpretation of the variables is that the first variable indicates confidence and the second one preference.
+
+What I liked about this article in relation to the last week's article [1] is that the authors addressed the quality analysis of their model proposal on more than one dimension beyond quantitative analysis. They discussed how their approach allowed the model to explain the reccomendations. This feature improves the user experience with the reccomender system significatively. Also they discussed novelty/serendipity as they are able to discard the "easy" reccomendations and providing the user items that aid them to their discovery.
+
+What I disliked about the article is that they presented at first the problem in a more global and broader way trying to cover the topic of implicit feedback. But then the model was heavily influenced by the dataset used (TV Shows). After defining the model, they made adjustements and improvements that fitted well to the problem of TV shows recommendations such addressing the momentum effect. This tuning of the model was specific to the data and may not be useful to readers that may want to replicate the implicit feedback model on other domains.
+Regarding TV shows reccomendations I think that they missed on something relevant on the definition of their continous variable. They modeled the time watched of a certain show using as scale the length of the show itself (1 = user watched the whole show, 2.5 = user watched twice and a half of the same show and so on). The problem is that , in my opinion, watching half of a long show should provide a stronger feedback than watching half of a short show. With the proposed variable definition the magnitude of the feedback is equal. I would have blended their variable with a value that indicates a standard unit of time such as minutes to avoid the situation I stated before.
+
+More generally, regarding implicit feedback, there are some other things that I would like to point out in relation to the article:
+
+- Bias per user was not implemented but I consider it useful due to my personal experience as an user of a RecSys. Some users have very few interactions with content (swipes, tapping on more info tabs, commenting, etc..) in relation to other users. This means that the average number of interactions per user is not uniformly distributed. Maybe a bias term would help to even out the behavior of users of the system
+  
+- Giving different interpration to the feedback is a good strategy. The model proposed in this article is based on it. The authors consider watching a show as positive feedback (preference) and the time watched (or repetitions) as support(confidence) [2]. Going further on this strategy, it is also desirable to assign different weights to different kinds of implicit feedback. For instance, the time watching an ad is of less value (in terms of the magnitude of the positive feedback) on actually clicking the ad. This allows to better model how the user values the content he/she interacts with. This article did not address this topic probably due to the dataset used for experimentation that lacked of multiple sources of implicit feedback.
+
+- A hybrid implicit/explicit model makes sense after reading this article. The authors made special emphasis on the separation of preference variables and confidence variables. In characteristic no. 3 of implicit feedback the following is stated :
+
+      The numerical value of explicit feedback indicates *preference*, whereas the numerical value of implicit feedback indicates *condfidence*.
+  
+  It makes sense to think of a model that instead of having implicit feedback both indicate preference and confidence, to include explicit feedback as a preference indicator and leave implicit feedback as support/confidence.
+
+## References
+
+[1] Sarwar, B., Karypis, G., Konstan, J., & Riedl, J. (2001). Item-based collaborative filtering recommendation algorithms. In Proceedings of the 10th international conference on World Wide Web (pp. 285-295).
+
+[2] Ricci, F., Rokach, L., & Shapira, B. (2015). Class Imbalance Problems and Presentation Effects. In Recommender systems handbook (p. 411). New York (N.Y.): Springer.
